@@ -20,7 +20,6 @@ public class OBJLoaderTest {
     @Before
     public void setUp() throws MalformedURLException {
         String path = PathHelper.currentFileDirectory();
-
         URL url = new URL(path);
 
         MeshLoader.getInstance().setUrl(url.toString());
@@ -45,7 +44,7 @@ public class OBJLoaderTest {
         try {
 
             if (TestUtils.isTestEnvironment(dir)) {
-                dir = new URL(MeshLoader.getInstance().getUrl(), "etyllica/assets/models/" + filename);
+                dir = new URL(MeshLoader.getInstance().getUrl(), "propan/assets/models/" + filename);
             }
 
             Model vbo = loader.loadModel(dir, filename);

@@ -1,7 +1,5 @@
 package com.harium.propan.linear;
 
-import java.awt.Color;
-
 import com.badlogic.gdx.math.Vector3;
 
 /**
@@ -15,9 +13,7 @@ public class Camera extends Shape {
 	
 	private Vector3 target;
 	private Vector3 normal;
-	
-	private Color color = Color.BLACK;
-	
+
 	public Camera(float x, float y, float z) {
 		super(x, y, z);
 		target = new Vector3(0, 0, 0);
@@ -70,11 +66,4 @@ public class Camera extends Shape {
 		return angleInDegrees;		
 	}
 
-	public Color getColor() {
-		return color;
-	}
-
-	public void setColor(Color color) {
-		this.color = color;
-	}
 }

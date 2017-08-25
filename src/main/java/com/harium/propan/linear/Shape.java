@@ -1,9 +1,8 @@
 package com.harium.propan.linear;
 
-import java.awt.Color;
-
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
+import com.harium.etyl.commons.graphics.Color;
 
 
 public class Shape {

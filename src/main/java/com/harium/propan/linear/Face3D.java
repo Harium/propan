@@ -1,6 +1,7 @@
 package com.harium.propan.linear;
 
-import java.awt.Color;
+import com.harium.etyl.commons.graphics.Color;
+
 import java.util.Vector;
 
 /**
