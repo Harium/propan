@@ -1,9 +1,9 @@
-package com.harium.propan.core.context;
+package com.harium.propan.commons.context;
 
 import com.harium.propan.core.graphics.Graphics3D;
 
 
-public interface PropanAplication {
+public interface PropanApplication {
 
 	void init(Graphics3D g);
 	
