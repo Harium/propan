@@ -1,5 +1,14 @@
 package com.harium.propan.core.loader.mesh;
 
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.harium.etyl.util.PathHelper;
+import com.harium.propan.core.loader.VBOLoader;
+import com.harium.propan.core.material.OBJMaterial;
+import com.harium.propan.core.model.Face;
+import com.harium.propan.core.model.Group;
+import com.harium.propan.core.model.Model;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -8,196 +17,188 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-
-import com.harium.etyl.util.PathHelper;
-import com.harium.propan.core.loader.VBOLoader;
-import com.harium.propan.core.material.OBJMaterial;
-import com.harium.propan.core.model.Face;
-import com.harium.propan.core.model.Group;
-import com.harium.propan.core.model.Model;
-
 
 /**
- * 
  * @author Oskar
  * (This version was modified by yuripourre to support materials)
  * @license LGPLv3
- *  
  */
 
 public class OBJLoader implements VBOLoader {
-	
-	public static final String VERTEX = "v";
-	public static final String FACE = "f";
-	public static final String GROUP = "g";
-	public static final String VERTEX_TEXCOORD = "vt";
-	public static final String VERTEX_NORMAL = "vn";
-	public static final String OBJECT = "o";
-	public static final String MATERIAL_LIB = "mtllib";
-	public static final String USE_MATERIAL = "usemtl";
-		
-	private static final String SEPARATOR = "/";
 
-	public Model loadModel(URL url, String path) throws FileNotFoundException, IOException {
+    public static final String VERTEX = "v";
+    public static final String FACE = "f";
+    public static final String GROUP = "g";
+    public static final String VERTEX_TEXCOORD = "vt";
+    public static final String VERTEX_NORMAL = "vn";
+    public static final String OBJECT = "o";
+    public static final String MATERIAL_LIB = "mtllib";
+    public static final String USE_MATERIAL = "usemtl";
 
-		String fpath = url.getPath();
-		
-		String modelFolder = PathHelper.upperDirectory(fpath);
-		
-		Model vbo = new Model(path);
+    private static final String SEPARATOR = "/";
 
-		List<Group> groups = new ArrayList<Group>();
-		Group group = new Group(DEFAULT_GROUP_NAME);
+    public Model loadModel(URL url, String path) throws FileNotFoundException, IOException {
 
-		BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
-		
-		String line;
+        String fpath = url.getPath();
 
-		while ((line = reader.readLine()) != null) {
+        String modelFolder = PathHelper.upperDirectory(fpath);
 
-			line = fixLine(line);
+        Model vbo = new Model(path);
 
-			if (line.startsWith(GROUP+" ")) {
+        List<Group> groups = new ArrayList<Group>();
+        Group group = new Group(DEFAULT_GROUP_NAME);
 
-				String groupName = line.split(" ")[1];
-				
-				if(!DEFAULT_GROUP_NAME.equals(group.getName())) {
-					//Add last group
-					groups.add(group);
-				} else if(!group.getFaces().isEmpty()) {
-					//If group has at least one face 
-					groups.add(group);
-				}
-				group = new Group(groupName);
-				
-			} else if (line.startsWith(USE_MATERIAL+" ")) {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
 
-				String materialName = line.split(" ")[1];
-				group.setMaterial(vbo.getMaterials().get(materialName));
-				
-			} else if (line.startsWith(VERTEX+" ")) {
-				parseVertex(line, vbo);                
+        String line;
 
-			} else if (line.startsWith(VERTEX_NORMAL+" ")) {
-				parseVertexNormal(line, vbo);
+        while ((line = reader.readLine()) != null) {
 
-			} else if (line.startsWith(VERTEX_TEXCOORD+" ")) {
-				parseVertexTexture(line, vbo);
+            line = fixLine(line);
 
-			} else if (line.startsWith(FACE+" ")) {
-				parseFace(vbo, group, line);
+            if (line.startsWith(GROUP + " ")) {
 
-			} else if (line.startsWith(MATERIAL_LIB)) {
-				parseMaterial(modelFolder, vbo, line);
-			}
-		}
+                String groupName = line.split(" ")[1];
 
-		reader.close();
+                if (!DEFAULT_GROUP_NAME.equals(group.getName())) {
+                    //Add last group
+                    groups.add(group);
+                } else if (!group.getFaces().isEmpty()) {
+                    //If group has at least one face
+                    groups.add(group);
+                }
+                group = new Group(groupName);
 
-		//Add group to Model
-		if(group!=null) {
-			groups.add(group);
-		}
+            } else if (line.startsWith(USE_MATERIAL + " ")) {
 
-		vbo.setGroups(groups);
+                String materialName = line.split(" ")[1];
+                group.setMaterial(vbo.getMaterials().get(materialName));
 
-		return vbo;
-	}
+            } else if (line.startsWith(VERTEX + " ")) {
+                parseVertex(line, vbo);
 
-	private void parseMaterial(String modelFolder, Model vbo, String line)
-			throws IOException {
-		List<OBJMaterial> materials = parseMaterial(modelFolder, line);
+            } else if (line.startsWith(VERTEX_NORMAL + " ")) {
+                parseVertexNormal(line, vbo);
 
-		for(OBJMaterial material: materials) {
-			vbo.getMaterials().put(material.getName(), material);
-		}
-	}
+            } else if (line.startsWith(VERTEX_TEXCOORD + " ")) {
+                parseVertexTexture(line, vbo);
 
-	private void parseFace(Model vbo, Group group, String line) {
-		String[] splitLine = line.substring(2).split(" ");
+            } else if (line.startsWith(FACE + " ")) {
+                parseFace(vbo, group, line);
 
-		int sides = splitLine.length;
+            } else if (line.startsWith(MATERIAL_LIB)) {
+                parseMaterial(modelFolder, vbo, line);
+            }
+        }
 
-		int[] vIndexes = new int[sides];
-		int[] nIndexes = new int[sides];
-		int[] texIndexes = new int[sides];
+        reader.close();
 
-		for(int i=0;i<sides;i++) {
+        //Add group to Model
+        if (group != null) {
+            groups.add(group);
+        }
 
-			String[] face = splitLine[i].split(SEPARATOR);
+        vbo.setGroups(groups);
 
-			if(face.length > 1) {
+        return vbo;
+    }
 
-				//vIndexes starts in 0
-				//Faces starts in 1
-				vIndexes[i] = Integer.parseInt(face[0])-1;
+    private void parseMaterial(String modelFolder, Model vbo, String line) {
+        List<OBJMaterial> materials = parseMaterial(modelFolder, line);
 
-				if(!face[1].isEmpty()) {
-					texIndexes[i] = Integer.parseInt(face[1])-1;
-				}
+        for (OBJMaterial material : materials) {
+            vbo.getMaterials().put(material.getName(), material);
+        }
+    }
 
-				if(face.length > 2) {
-					nIndexes[i] = Integer.parseInt(face[2])-1;
-				}
+    private void parseFace(Model vbo, Group group, String line) {
+        String[] splitLine = line.substring(2).split(" ");
 
-			} else {
-				//Save only the vertexes indexes
-				vIndexes[i] = Integer.parseInt(splitLine[i])-1;
-			}
-		}
+        int sides = splitLine.length;
 
-		Face face = new Face(vIndexes, texIndexes, nIndexes);
-		face.setSides(sides);
+        int[] vIndexes = new int[sides];
+        int[] nIndexes = new int[sides];
+        int[] texIndexes = new int[sides];
 
-		group.getFaces().add(face);
-		vbo.getFaces().add(face);
-	}
+        for (int i = 0; i < sides; i++) {
 
-	private String fixLine(String line) {
-		return line.replaceAll("  "," ");
-	}
+            String[] face = splitLine[i].split(SEPARATOR);
 
-	private static void parseVertex(String line, Model vbo) {
+            if (face.length > 1) {
 
-		String[] parts = line.split(" ");
+                //vIndexes starts in 0
+                //Faces starts in 1
+                vIndexes[i] = Integer.parseInt(face[0]) - 1;
 
-		float x = Float.valueOf(parts[1]);
-		float y = Float.valueOf(parts[2]);
-		float z = Float.valueOf(parts[3]);
-		
-		vbo.addVertex(new Vector3(x, y, z));
-	}
+                if (!face[1].isEmpty()) {
+                    texIndexes[i] = Integer.parseInt(face[1]) - 1;
+                }
 
-	private static void parseVertexNormal(String line, Model vbo) {
+                if (face.length > 2) {
+                    nIndexes[i] = Integer.parseInt(face[2]) - 1;
+                }
 
-		String[] parts = line.split(" ");
+            } else {
+                //Save only the vertexes indexes
+                vIndexes[i] = Integer.parseInt(splitLine[i]) - 1;
+            }
+        }
 
-		float x = Float.valueOf(parts[1]);
-		float y = Float.valueOf(parts[2]);
-		float z = Float.valueOf(parts[3]);
-		
-		vbo.getNormals().add(new Vector3(x, y, z));    	
-	}
+        Face face = new Face(vIndexes, texIndexes, nIndexes);
+        face.setSides(sides);
 
-	private static void parseVertexTexture(String line, Model vbo) {
+        group.getFaces().add(face);
+        vbo.getFaces().add(face);
+    }
 
-		String[] parts = line.split(" ");
+    private String fixLine(String line) {
+        return line.replaceAll("  ", " ");
+    }
 
-		float x = Float.valueOf(parts[1]);
-		float y = Float.valueOf(parts[2]);
+    private static void parseVertex(String line, Model vbo) {
 
-		vbo.getTextures().add(new Vector2(x, y));
-	}
+        String[] parts = line.split(" ");
 
-	private static List<OBJMaterial> parseMaterial(String folder, String line) throws IOException {
+        float x = Float.valueOf(parts[1]);
+        float y = Float.valueOf(parts[2]);
+        float z = Float.valueOf(parts[3]);
 
-		String filename = line.substring(line.indexOf(" ")+1);
-		
-		List<OBJMaterial> materials = OBJMaterialLoader.loadMaterial(folder,filename);
+        vbo.addVertex(new Vector3(x, y, z));
+    }
 
-		return materials;    	
-	}
+    private static void parseVertexNormal(String line, Model vbo) {
+
+        String[] parts = line.split(" ");
+
+        float x = Float.valueOf(parts[1]);
+        float y = Float.valueOf(parts[2]);
+        float z = Float.valueOf(parts[3]);
+
+        vbo.getNormals().add(new Vector3(x, y, z));
+    }
+
+    private static void parseVertexTexture(String line, Model vbo) {
+
+        String[] parts = line.split(" ");
+
+        float x = Float.valueOf(parts[1]);
+        float y = Float.valueOf(parts[2]);
+
+        vbo.getTextures().add(new Vector2(x, y));
+    }
+
+    private static List<OBJMaterial> parseMaterial(String folder, String line) {
+
+        String filename = line.substring(line.indexOf(" ") + 1);
+
+        List<OBJMaterial> materials = new ArrayList<>();
+        try {
+            materials.addAll(OBJMaterialLoader.loadMaterial(folder, filename));
+        } catch (IOException e) {
+            System.err.println("Material " + filename + " not found in: "+folder);
+        }
+
+        return materials;
+    }
 
 }

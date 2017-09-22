@@ -26,6 +26,7 @@ public class OBJWriter implements VBOWriter {
 
         try {
             String filename = PathHelper.filename(path);
+            filename = filename.substring(1, filename.length() - 4);
             File file = IOHelper.getFile(path);
 
             writer = new BufferedWriter(new OutputStreamWriter(
