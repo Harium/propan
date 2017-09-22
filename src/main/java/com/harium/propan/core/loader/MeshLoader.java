@@ -62,7 +62,7 @@ public class MeshLoader extends LoaderImpl {
         VBOLoader loader = getLoader(ext);
 
         if (loader == null) {
-            System.out.println("Abby can't load " + ext + " files.");
+            System.out.println("Propan can't load " + ext + " files.");
         } else {
             try {
                 return loader.loadModel(dir, path);

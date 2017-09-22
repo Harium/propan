@@ -1,5 +1,6 @@
 package com.harium.propan.core.writer;
 
+import com.badlogic.gdx.math.Vector3;
 import com.harium.etyl.util.StringUtils;
 import com.harium.etyl.util.io.IOHelper;
 import com.harium.propan.core.loader.mesh.OBJMaterialLoader;
@@ -23,6 +24,7 @@ public class OBJMaterialWriter implements MaterialWriter<OBJMaterial> {
             writeHeader(material, writer);
 
             writer.write(OBJMaterialLoader.NEW_MATERIAL + " " + material.getName() + StringUtils.NEW_LINE);
+            writeVector(writer, OBJMaterialLoader.DIFFUSE_COLOR, material.getKd());
             writer.write(OBJMaterialLoader.DIFFUSE_TEX_MAP + " " + material.getMapKd() + StringUtils.NEW_LINE);
 
         } catch (IOException e) {
@@ -32,8 +34,12 @@ public class OBJMaterialWriter implements MaterialWriter<OBJMaterial> {
         }
     }
 
+    private void writeVector(Writer writer, String attribute, Vector3 v) throws IOException {
+        writer.write(attribute + " " + v.x + " " + " " + v.y + " " + v.z + StringUtils.NEW_LINE);
+    }
+
     private void writeHeader(OBJMaterial material, Writer writer) throws IOException {
-        writer.write("# Created by Abby " + StringUtils.NEW_LINE);
+        writer.write("# Created by Propan " + StringUtils.NEW_LINE);
     }
 
 }

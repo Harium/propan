@@ -59,6 +59,45 @@ public class OBJLoaderTest {
             Assert.fail();
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void testLoadModelWithTwoMaterials() {
+
+        // Harium Logo
+        String filename = "logo/logo.obj";
+
+        URL dir = null;
+        try {
+            dir = MeshLoader.getInstance().getFullURL(filename);
+        } catch (MalformedURLException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+
+        try {
+
+            if (TestUtils.isTestEnvironment(dir)) {
+                dir = new URL(MeshLoader.getInstance().getUrl(), "propan/assets/models/" + filename);
+            }
+
+            Model vbo = loader.loadModel(dir, filename);
+            Assert.assertNotNull(vbo);
+            Assert.assertEquals(36, vbo.getFaces().size());
+            Assert.assertEquals(24, vbo.getVertices().size());
+            Assert.assertEquals(3, vbo.getMaterials().size());
+
+            // Test Materials
+            Assert.assertEquals("left", vbo.getGroups().get(0).getMaterial().getName());
+            Assert.assertEquals("right", vbo.getGroups().get(1).getMaterial().getName());
+
+        } catch (FileNotFoundException e) {
+            Assert.fail();
+            e.printStackTrace();
+        } catch (IOException e) {
+            Assert.fail();
+            e.printStackTrace();
+        }
 
     }
 }

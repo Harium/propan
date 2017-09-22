@@ -18,7 +18,7 @@ public class Model {
 
     private BoundingBox3D boundingBox = new BoundingBox3D();
 
-    //Original vertices positions
+    // Original vertices positions
     private List<Vector3> vertices = new ArrayList<Vector3>();
     private List<Vector3> normals = new ArrayList<Vector3>();
     private List<Vector2> textures = new ArrayList<Vector2>();

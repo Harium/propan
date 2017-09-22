@@ -60,7 +60,7 @@ public class AnimationLoader extends LoaderImpl {
         MotionLoader loader = getLoader(ext);
 
         if (loader == null) {
-            System.out.println("Abby can't load " + ext + " files.");
+            System.out.println("Propan can't load " + ext + " files.");
         } else {
             try {
                 return loader.loadMotion(dir, path);

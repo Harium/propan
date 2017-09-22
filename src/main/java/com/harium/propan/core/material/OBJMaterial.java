@@ -31,6 +31,11 @@ public class OBJMaterial {
 		super();
 	}
 
+	public OBJMaterial(String name) {
+		super();
+		this.name = name;
+	}
+
 	public String getName() {
 		return name;
 	}

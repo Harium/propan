@@ -7,43 +7,43 @@ import java.util.Map;
 
 public class Armature {
 
-	Joint root;
-	List<Bone> bones = new ArrayList<Bone>();
-	List<Joint> joints = new ArrayList<Joint>();
-	
-	Map<String, Integer> jointIndex = new HashMap<String, Integer>();
-	
-	public Armature() {
-		super();
-	}
+    Joint root;
+    List<Bone> bones = new ArrayList<Bone>();
+    List<Joint> joints = new ArrayList<Joint>();
 
-	public Joint getRoot() {
-		return root;
-	}
+    Map<String, Integer> jointIndex = new HashMap<String, Integer>();
 
-	public void setRoot(Joint root) {
-		this.root = root;
-	}
+    public Armature() {
+        super();
+    }
 
-	public void addBone(Bone bone) {
-		bones.add(bone);
-	}
-	
-	public List<Bone> getBones() {
-		return bones;
-	}
+    public Joint getRoot() {
+        return root;
+    }
 
-	public void addJoint(int index, Joint joint) {
-		jointIndex.put(joint.name, index);
-		joints.add(joint);
-	}
-	
-	public List<Joint> getJoints() {
-		return joints;
-	}
+    public void setRoot(Joint root) {
+        this.root = root;
+    }
 
-	public int getIndex(Joint joint) {
-		return jointIndex.get(joint.name);
-	}
-	
+    public void addBone(Bone bone) {
+        bones.add(bone);
+    }
+
+    public List<Bone> getBones() {
+        return bones;
+    }
+
+    public void addJoint(int index, Joint joint) {
+        jointIndex.put(joint.name, index);
+        joints.add(joint);
+    }
+
+    public List<Joint> getJoints() {
+        return joints;
+    }
+
+    public int getIndex(Joint joint) {
+        return jointIndex.get(joint.name);
+    }
+
 }

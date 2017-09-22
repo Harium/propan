@@ -2,6 +2,7 @@ package com.harium.propan.core.writer;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.harium.etyl.util.PathHelper;
 import com.harium.etyl.util.StringUtils;
 import com.harium.etyl.util.io.IOHelper;
 import com.harium.propan.core.loader.mesh.OBJLoader;
@@ -15,27 +16,33 @@ import java.util.List;
 
 public class OBJWriter implements VBOWriter {
 
+    private static final boolean optimize = false;
     private static final String FACE_SEPARATOR = "/";
     private static final String MTL_EXTENSION = ".mtl";
 
     @Override
-    public void writeVBO(Model vbo, String filename) throws IOException {
-
+    public void writeVBO(Model vbo, String path) throws IOException {
         Writer writer = null;
 
         try {
-            File file = IOHelper.getFile(filename);
+            String filename = PathHelper.filename(path);
+            File file = IOHelper.getFile(path);
 
             writer = new BufferedWriter(new OutputStreamWriter(
                     new FileOutputStream(file), IOHelper.ENCODING_UTF_8));
 
-            writeMaterials(vbo, writer);
+            if (!optimize) {
+                writeHeader(vbo, writer);
+            }
+
+            writeMaterialLibrary(vbo, writer, filename);
             writeVertexes(vbo, writer);
 
             writeTextures(vbo, writer);
 
-            //Optional
-            writer.write(StringUtils.NEW_LINE);
+            if (!optimize) {
+                writer.write(StringUtils.NEW_LINE);
+            }
             writeNormals(vbo, writer);
 
             writeFaces(writer, vbo.getFaces());
@@ -43,6 +50,10 @@ public class OBJWriter implements VBOWriter {
             for (Group group : vbo.getGroups()) {
                 writeGroupSetup(writer, group);
                 writeFaces(writer, group.getFaces());
+            }
+
+            if (!vbo.getMaterials().isEmpty()) {
+                //exportMaterials();
             }
 
         } catch (IOException e) {
@@ -53,7 +64,7 @@ public class OBJWriter implements VBOWriter {
     }
 
     private void writeHeader(Model vbo, Writer writer) throws IOException {
-        writer.write("# Created by Abby " + StringUtils.NEW_LINE);
+        writer.write("# Created by Propan " + StringUtils.NEW_LINE);
         writer.write("# Vertices: " + verticesCount(vbo) + ",  Faces: " + facesCount(vbo) + StringUtils.NEW_LINE);
     }
 
@@ -69,20 +80,21 @@ public class OBJWriter implements VBOWriter {
         return sum;
     }
 
-    private void writeMaterials(Model vbo, Writer writer) throws IOException {
-        for (String materialLib : vbo.getMaterialLibs()) {
-            writer.write(OBJLoader.MATERIAL_LIB + " " + materialLib + MTL_EXTENSION + StringUtils.NEW_LINE);
-        }
-        /*for(String materialName: vbo.getMaterials().keySet()) {
-			writer.write(OBJLoader.MATERIAL_LIB+" "+materialName+StringUtils.NEW_LINE);	
-		}*/
+    private void writeMaterialLibrary(Model vbo, Writer writer, String filename) throws IOException {
+        writer.write(OBJLoader.MATERIAL_LIB + " " + filename + MTL_EXTENSION + StringUtils.NEW_LINE);
     }
 
     private void writeGroupSetup(Writer writer, Group group) throws IOException {
-        if (group.getMaterial() != null) {
-            writer.write(OBJLoader.USE_MATERIAL + " " + group.getMaterial().getName() + StringUtils.NEW_LINE);
-        }
         writer.write(OBJLoader.GROUP + " " + group.getName() + StringUtils.NEW_LINE);
+
+        // Define material after the group
+        if (group.getMaterial() != null) {
+            String materialName = group.getMaterial().getName();
+            if (materialName.isEmpty()) {
+                materialName = group.getName();
+            }
+            writer.write(OBJLoader.USE_MATERIAL + " " + materialName + StringUtils.NEW_LINE);
+        }
     }
 
     private void writeFaces(Writer writer, List<Face> faces) throws IOException {
@@ -100,11 +112,12 @@ public class OBJWriter implements VBOWriter {
                     sb.append(" ");
                 }
 
-                sb.append(face.vertexIndex[i]);
+                int vertexIndex = face.vertexIndex[i] + 1;
+                sb.append(vertexIndex);
 
                 if (hasTexture) {
                     sb.append(FACE_SEPARATOR);
-                    sb.append(face.textureIndex[i]);
+                    sb.append(face.textureIndex[i] + 1);
                 }
 
                 if (hasNomals) {
@@ -112,7 +125,7 @@ public class OBJWriter implements VBOWriter {
                     if (!hasTexture) {
                         sb.append(FACE_SEPARATOR);
                     }
-                    sb.append(face.normalIndex[i]);
+                    sb.append(face.normalIndex[i] + 1);
                 }
             }
 
@@ -162,9 +175,10 @@ public class OBJWriter implements VBOWriter {
             writer.write(text);
         }
 
-        //Optional
-        if (!vbo.getNormals().isEmpty()) {
-            writer.write(StringUtils.NEW_LINE);
+        if (!optimize) {
+            if (!vbo.getNormals().isEmpty()) {
+                writer.write(StringUtils.NEW_LINE);
+            }
         }
     }
 
