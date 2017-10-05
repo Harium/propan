@@ -38,7 +38,7 @@ public class OBJMaterialWriter implements MaterialWriter<OBJMaterial> {
         if (attribute.isEmpty()) {
             return;
         }
-        writer.write(OBJMaterialLoader.DIFFUSE_TEX_MAP + " " + attribute + StringUtils.NEW_LINE);
+        writer.write(objAttribute + " " + attribute + StringUtils.NEW_LINE);
     }
 
     private void writeVector(Writer writer, String attribute, Vector3 v) throws IOException {
