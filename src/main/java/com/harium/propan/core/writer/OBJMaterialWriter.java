@@ -25,7 +25,7 @@ public class OBJMaterialWriter implements MaterialWriter<OBJMaterial> {
 
             writer.write(OBJMaterialLoader.NEW_MATERIAL + " " + material.getName() + StringUtils.NEW_LINE);
             writeVector(writer, OBJMaterialLoader.DIFFUSE_COLOR, material.getKd());
-            writer.write(OBJMaterialLoader.DIFFUSE_TEX_MAP + " " + material.getMapKd() + StringUtils.NEW_LINE);
+            writeAttribute(writer, OBJMaterialLoader.DIFFUSE_TEX_MAP, material.getMapKd());
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -34,7 +34,17 @@ public class OBJMaterialWriter implements MaterialWriter<OBJMaterial> {
         }
     }
 
+    private void writeAttribute(Writer writer, String objAttribute, String attribute) throws IOException {
+        if (attribute.isEmpty()) {
+            return;
+        }
+        writer.write(OBJMaterialLoader.DIFFUSE_TEX_MAP + " " + attribute + StringUtils.NEW_LINE);
+    }
+
     private void writeVector(Writer writer, String attribute, Vector3 v) throws IOException {
+        if (v == null) {
+            return;
+        }
         writer.write(attribute + " " + v.x + " " + " " + v.y + " " + v.z + StringUtils.NEW_LINE);
     }
 
