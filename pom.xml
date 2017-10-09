@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.harium.propan</groupId>
     <artifactId>propan</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
     <name>Propan</name>
     <description>3D engine based on etyl</description>
     <url>http://github.com/harium/propan</url>
@@ -33,7 +33,7 @@
         <dependency>
             <groupId>com.harium</groupId>
             <artifactId>etyl</artifactId>
-            <version>1.0.13</version>
+            <version>1.1.1</version>
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>
