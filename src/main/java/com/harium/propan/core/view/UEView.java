@@ -6,166 +6,166 @@ import com.harium.etyl.commons.event.PointerEvent;
 
 public class UEView extends FlyView {
 
-	int mx, my, rmx, rmy;
-	float startX, startY;
-	double startAngleX, startAngleY;
+    int mx, my, rmx, rmy;
+    float startX, startY;
+    double startAngleX, startAngleY;
 
-	private boolean mouseLeft = false;
-	private boolean mouseRight = false;
+    private boolean mouseLeft = false;
+    private boolean mouseRight = false;
 
-	public UEView(float x, float y, float z) {
-		super(x, y, z);
-	}
+    public UEView(float x, float y, float z) {
+        super(x, y, z);
+    }
 
-	@Override
-	public void updateKeyboard(KeyEvent event) {
-		if(event.isKeyDown(KeyEvent.VK_W)) {
-			forwardPressed = true;
-		} else if(event.isKeyUp(KeyEvent.VK_W)) {
-			forwardPressed = false;
-		}
+    @Override
+    public void updateKeyboard(KeyEvent event) {
+        if (event.isKeyDown(KeyEvent.VK_W)) {
+            forwardPressed = true;
+        } else if (event.isKeyUp(KeyEvent.VK_W)) {
+            forwardPressed = false;
+        }
 
-		if(event.isKeyDown(KeyEvent.VK_S)) {
-			backwardPressed = true;
-		} else if(event.isKeyUp(KeyEvent.VK_S)) {
-			backwardPressed = false;
-		}
+        if (event.isKeyDown(KeyEvent.VK_S)) {
+            backwardPressed = true;
+        } else if (event.isKeyUp(KeyEvent.VK_S)) {
+            backwardPressed = false;
+        }
 
-		if(event.isKeyDown(KeyEvent.VK_E)) {
-			liftPressed = true;
-		} else if(event.isKeyUp(KeyEvent.VK_E)) {
-			liftPressed = false;
-		}
+        if (event.isKeyDown(KeyEvent.VK_E)) {
+            liftPressed = true;
+        } else if (event.isKeyUp(KeyEvent.VK_E)) {
+            liftPressed = false;
+        }
 
-		if(event.isKeyDown(KeyEvent.VK_Q)) {
-			divePressed = true;
-		} else if(event.isKeyUp(KeyEvent.VK_Q)) {
-			divePressed = false;
-		}
+        if (event.isKeyDown(KeyEvent.VK_Q)) {
+            divePressed = true;
+        } else if (event.isKeyUp(KeyEvent.VK_Q)) {
+            divePressed = false;
+        }
 
-		if(event.isKeyDown(KeyEvent.VK_D)) {
-			strafeRightPressed = true;
-		} else if(event.isKeyUp(KeyEvent.VK_D)) {
-			strafeRightPressed = false;
-		}
+        if (event.isKeyDown(KeyEvent.VK_D)) {
+            strafeRightPressed = true;
+        } else if (event.isKeyUp(KeyEvent.VK_D)) {
+            strafeRightPressed = false;
+        }
 
-		if(event.isKeyDown(KeyEvent.VK_A)) {
-			strafeLeftPressed = true;			
-		} else if(event.isKeyUp(KeyEvent.VK_A)) {
-			strafeLeftPressed = false;
-		}
-		
-		if(event.isKeyDown(KeyEvent.VK_UP_ARROW)) {
-			upPressed = true;
-		} else if(event.isKeyUp(KeyEvent.VK_UP_ARROW)) {
-			upPressed = false;
-		}
+        if (event.isKeyDown(KeyEvent.VK_A)) {
+            strafeLeftPressed = true;
+        } else if (event.isKeyUp(KeyEvent.VK_A)) {
+            strafeLeftPressed = false;
+        }
 
-		if(event.isKeyDown(KeyEvent.VK_DOWN_ARROW)) {
-			downPressed = true;
-		} else if(event.isKeyUp(KeyEvent.VK_DOWN_ARROW)) {
-			downPressed = false;
-		}
+        if (event.isKeyDown(KeyEvent.VK_UP_ARROW)) {
+            upPressed = true;
+        } else if (event.isKeyUp(KeyEvent.VK_UP_ARROW)) {
+            upPressed = false;
+        }
 
-		if(event.isKeyDown(KeyEvent.VK_RIGHT_ARROW)) {
-			rightPressed = true;
-		} else if(event.isKeyUp(KeyEvent.VK_RIGHT_ARROW)) {
-			rightPressed = false;
-		}
+        if (event.isKeyDown(KeyEvent.VK_DOWN_ARROW)) {
+            downPressed = true;
+        } else if (event.isKeyUp(KeyEvent.VK_DOWN_ARROW)) {
+            downPressed = false;
+        }
 
-		if(event.isKeyDown(KeyEvent.VK_LEFT_ARROW)) {
-			leftPressed = true;			
-		} else if(event.isKeyUp(KeyEvent.VK_LEFT_ARROW)) {
-			leftPressed = false;
-		}
+        if (event.isKeyDown(KeyEvent.VK_RIGHT_ARROW)) {
+            rightPressed = true;
+        } else if (event.isKeyUp(KeyEvent.VK_RIGHT_ARROW)) {
+            rightPressed = false;
+        }
+
+        if (event.isKeyDown(KeyEvent.VK_LEFT_ARROW)) {
+            leftPressed = true;
+        } else if (event.isKeyUp(KeyEvent.VK_LEFT_ARROW)) {
+            leftPressed = false;
+        }
 
 		/*if(event.isKeyDown(KeyEvent.VK_SPACE)) {
-			spacePressed = true;
+            spacePressed = true;
 		} else if(event.isKeyUp(KeyEvent.VK_SPACE)) {
 			spacePressed = false;
 		}*/
-	}
+    }
 
-	@Override
-	public void updateMouse(PointerEvent event) {
-		mx = event.getX();
-		my = event.getY();
+    @Override
+    public void updateMouse(PointerEvent event) {
+        mx = event.getX();
+        my = event.getY();
 
-		if (event.isButtonDown(MouseEvent.MOUSE_BUTTON_LEFT)) {
-			if(!mouseLeft) {
-				mouseLeft = true;
-			}
-		} else if (event.isButtonUp(MouseEvent.MOUSE_BUTTON_LEFT)) {
-			mouseLeft = false;
-		}
+        if (event.isButtonDown(MouseEvent.MOUSE_BUTTON_LEFT)) {
+            if (!mouseLeft) {
+                mouseLeft = true;
+            }
+        } else if (event.isButtonUp(MouseEvent.MOUSE_BUTTON_LEFT)) {
+            mouseLeft = false;
+        }
 
-		if (event.isButtonDown(MouseEvent.MOUSE_BUTTON_RIGHT)) {
-			if(!mouseRight) {
-				mouseRight = true;
-				rmx = mx;
-				rmy = my;
-				startX = aim.x;
-				startY = aim.y;
-				startAngleX = aim.getAngleX();
-				startAngleY = aim.getAngleY();
-			}
-		} else if (event.isButtonUp(MouseEvent.MOUSE_BUTTON_RIGHT)) {
-			mouseRight = false;
-		}
-	}
+        if (event.isButtonDown(MouseEvent.MOUSE_BUTTON_RIGHT)) {
+            if (!mouseRight) {
+                mouseRight = true;
+                rmx = mx;
+                rmy = my;
+                startX = aim.x;
+                startY = aim.y;
+                startAngleX = aim.getAngleX();
+                startAngleY = aim.getAngleY();
+            }
+        } else if (event.isButtonUp(MouseEvent.MOUSE_BUTTON_RIGHT)) {
+            mouseRight = false;
+        }
+    }
 
-	@Override
-	public void update(long now) {
-		if(forwardPressed) {
-			aim.z += walkSpeed;
-		}
+    @Override
+    public void update(long now) {
+        if (forwardPressed) {
+            aim.moveForward(walkSpeed);
+        }
 
-		if(backwardPressed) {
-			aim.z -= walkSpeed;	
-		}
-		
-		if(strafeRightPressed) {
-			aim.x -= walkSpeed;
-		}
+        if (backwardPressed) {
+            aim.moveForward(-walkSpeed);
+        }
 
-		if(strafeLeftPressed) {
-			aim.x += walkSpeed;	
-		}
+        if (strafeRightPressed) {
+            aim.strafe(walkSpeed);
+        }
 
-		if(upPressed) {
-			aim.offsetAngleX(turnSpeed);
-		}
+        if (strafeLeftPressed) {
+            aim.strafe(-walkSpeed);
+        }
 
-		if(downPressed) {
-			aim.offsetAngleX(-turnSpeed);
-		}
+        if (upPressed) {
+            aim.offsetAngleX(turnSpeed);
+        }
 
-		if(leftPressed) {
-			aim.offsetAngleY(+turnSpeed);			
-		}
+        if (downPressed) {
+            aim.offsetAngleX(-turnSpeed);
+        }
 
-		if(rightPressed) {
-			aim.offsetAngleY(-turnSpeed);			
-		}
+        if (leftPressed) {
+            aim.offsetAngleY(+turnSpeed);
+        }
 
-		if(liftPressed) {
-			aim.y += walkSpeed;			
-		}
-		
-		if(divePressed) {
-			aim.y -= walkSpeed;
-		}
+        if (rightPressed) {
+            aim.offsetAngleY(-turnSpeed);
+        }
 
-		if (mouseRight) {
-			if(!mouseLeft) {
-				aim.setAngleY(startAngleY-((mx-rmx)/3)%360);
-				aim.setAngleX(startAngleX-((my-rmy)/3)%360);
-			} else {
-				aim.x = ((startX-(mx-rmx)/3));
-				aim.y = ((startY-(my-rmy)/3));
-			}
-		}
+        if (liftPressed) {
+            aim.y += walkSpeed;
+        }
 
-	}
+        if (divePressed) {
+            aim.y -= walkSpeed;
+        }
+
+        if (mouseRight) {
+            if (!mouseLeft) {
+                aim.setAngleY(startAngleY - ((mx - rmx) / 3) % 360);
+                aim.setAngleX(startAngleX - ((my - rmy) / 3) % 360);
+            } else {
+                aim.x = ((startX - (mx - rmx) / 3));
+                aim.y = ((startY - (my - rmy) / 3));
+            }
+        }
+
+    }
 
 }

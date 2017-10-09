@@ -53,13 +53,20 @@ public class FlyView {
     }
 
     public void update(long now) {
-
         if (forwardPressed) {
-            aim.moveXZ(-walkSpeed);
+            aim.moveForward(-walkSpeed);
         }
 
         if (backwardPressed) {
-            aim.moveXZ(walkSpeed);
+            aim.moveForward(walkSpeed);
+        }
+
+        if (strafeRightPressed) {
+            aim.strafe(walkSpeed);
+        }
+
+        if (strafeLeftPressed) {
+            aim.strafe(-walkSpeed);
         }
 
         if (upPressed) {

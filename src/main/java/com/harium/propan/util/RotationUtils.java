@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 
-public class RotationUtil {
+public class RotationUtils {
 
 	/**
 	 * Convert angles to quaternion
@@ -14,7 +14,6 @@ public class RotationUtil {
 	 * @return quaternion
 	 */
 	public static final Quaternion convertToQuaternion(double yaw, double pitch, double roll) {
-
 		// Assuming the angles are in radians.
 		double c1 = Math.cos(yaw);
 		double s1 = Math.sin(yaw);
