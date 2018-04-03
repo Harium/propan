@@ -27,8 +27,8 @@
     <dependencies>
         <dependency>
             <groupId>com.harium.propan</groupId>
-            <artifactId>propan-gdx</artifactId>
-            <version>1.0</version>
+            <artifactId>propan-gdx-util</artifactId>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.harium.etyl</groupId>
