@@ -1,7 +1,7 @@
 package com.harium.propan.util;
 
 import com.badlogic.gdx.math.Vector3;
-import com.harium.etyl.linear.Point3D;
+import com.harium.etyl.geometry.Point3D;
 
 public class PointToVectorAdapter {
 

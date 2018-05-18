@@ -19,8 +19,8 @@ package com.harium.propan.math;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.math.collision.Ray;
-import com.harium.propan.linear.BaseCylinder;
-import com.harium.propan.linear.OrientedBoundingBox;
+import com.harium.propan.geometry.BaseCylinder;
+import com.harium.propan.geometry.OrientedBoundingBox;
 
 /**
  * Class offering various static methods for intersection testing between different geometric objects.

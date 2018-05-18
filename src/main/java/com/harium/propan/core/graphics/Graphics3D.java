@@ -1,8 +1,8 @@
 package com.harium.propan.core.graphics;
 
-import com.harium.propan.linear.AimPoint;
+import com.harium.propan.geometry.AimPoint;
 import com.harium.etyl.core.graphics.Graphics;
-import com.harium.etyl.linear.Point3D;
+import com.harium.etyl.geometry.Point3D;
 import com.badlogic.gdx.math.Vector3;
 
 public interface Graphics3D extends Graphics, GLGraphics, GLMatrixFunc {

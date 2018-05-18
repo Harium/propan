@@ -2,8 +2,8 @@ package com.harium.propan.core.view;
 
 import com.harium.etyl.commons.event.KeyEvent;
 import com.harium.etyl.commons.event.PointerEvent;
-import com.harium.propan.linear.AimPoint;
-import com.harium.propan.linear.Camera;
+import com.harium.propan.geometry.AimPoint;
+import com.harium.propan.geometry.Camera;
 
 public class FlyView {
 

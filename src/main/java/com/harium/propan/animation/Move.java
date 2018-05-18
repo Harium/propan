@@ -1,6 +1,6 @@
 package com.harium.propan.animation;
 
-import com.harium.propan.linear.Shape;
+import com.harium.propan.geometry.Shape;
 
 import com.badlogic.gdx.math.Vector3;
 

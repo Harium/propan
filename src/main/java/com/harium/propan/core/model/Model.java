@@ -2,9 +2,8 @@ package com.harium.propan.core.model;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.harium.etyl.linear.Point3D;
 import com.harium.propan.core.material.OBJMaterial;
-import com.harium.propan.linear.BoundingBox3D;
+import com.harium.propan.geometry.BoundingBox3D;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -101,7 +100,7 @@ public class Model {
         return boundingBox;
     }
 
-    public Point3D centroid(Face face) {
+    public Vector3 centroid(Face face) {
         float cx = 0, cy = 0, cz = 0;
 
         for (int i : face.vertexIndex) {
@@ -113,7 +112,7 @@ public class Model {
 
         int n = face.vertexIndex.length;
 
-        return new Point3D(cx / n, cy / n, cz / n);
+        return new Vector3(cx / n, cy / n, cz / n);
     }
 
     public String getPath() {

@@ -1,6 +1,6 @@
-package com.harium.propan.linear;
+package com.harium.propan.geometry;
 
-import com.harium.etyl.linear.Point3D;
+import com.badlogic.gdx.math.Vector3;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,18 +12,18 @@ public class BoundingBox3DTest {
     @Before
     public void setUp() {
         //Box representing a cube
-        box = new BoundingBox3D(new Point3D(0, 0, 0), new Point3D(10, 10, 10));
+        box = new BoundingBox3D(new Vector3(0, 0, 0), new Vector3(10, 10, 10));
     }
 
     @Test
     public void testContainsPoint() {
-        Assert.assertTrue(box.contains(new Point3D(0, 0, 0)));
-        Assert.assertFalse(box.contains(new Point3D(11, 0, 0)));
+        Assert.assertTrue(box.contains(new Vector3(0, 0, 0)));
+        Assert.assertFalse(box.contains(new Vector3(11, 0, 0)));
     }
 
     @Test
     public void testContainsBox() {
-        BoundingBox3D anotherBox = new BoundingBox3D(new Point3D(2, 2, 2), new Point3D(8, 8, 8));
+        BoundingBox3D anotherBox = new BoundingBox3D(new Vector3(2, 2, 2), new Vector3(8, 8, 8));
 
         Assert.assertTrue(box.contains(anotherBox));
         Assert.assertFalse(box.intersects(anotherBox));
@@ -31,7 +31,7 @@ public class BoundingBox3DTest {
 
     @Test
     public void testIntersectBox() {
-        BoundingBox3D anotherBox = new BoundingBox3D(new Point3D(8, 8, 8), new Point3D(12, 12, 12));
+        BoundingBox3D anotherBox = new BoundingBox3D(new Vector3(8, 8, 8), new Vector3(12, 12, 12));
 
         Assert.assertFalse(box.contains(anotherBox));
         Assert.assertTrue(box.intersects(anotherBox));

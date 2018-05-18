@@ -1,4 +1,4 @@
-package com.harium.propan.linear;
+package com.harium.propan.geometry;
 
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;

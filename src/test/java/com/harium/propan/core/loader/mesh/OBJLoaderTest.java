@@ -29,7 +29,6 @@ public class OBJLoaderTest {
 
     @Test
     public void testLoadModel() {
-
         //Load a cube made with triangles
         String filename = "cube.obj";
 

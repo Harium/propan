@@ -1,4 +1,4 @@
-package com.harium.propan.linear;
+package com.harium.propan.geometry;
 
 import java.util.ArrayList;
 import java.util.List;

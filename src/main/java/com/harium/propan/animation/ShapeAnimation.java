@@ -2,7 +2,7 @@ package com.harium.propan.animation;
 
 import com.harium.etyl.core.animation.Animation;
 import com.harium.etyl.core.animation.script.AnimationScript;
-import com.harium.propan.linear.Shape;
+import com.harium.propan.geometry.Shape;
 import com.harium.etyl.commons.interpolation.Interpolator;
 
 public class ShapeAnimation extends AnimationScript {
