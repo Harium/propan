@@ -42,7 +42,7 @@ public class ModelTest {
     public void testRotateWithOrigin() {
         float angle = 90;
 
-        model.addVertex(new Vector3(1,0,0));
+        model.addVertex(new Vector3(2,0,0));
         model.rotate(Vector3.Y, angle, new Vector3(1,0,0));
 
         Assert.assertEquals(1, model.getVertices().get(0).x, EPSILON);
