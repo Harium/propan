@@ -7,6 +7,6 @@ A 3D fork of Etyl.
 <dependency>
     <groupId>com.harium.propan</groupId>
     <artifactId>propan</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.7</version>
 </dependency>
 ```
