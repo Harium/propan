@@ -100,19 +100,71 @@ public class Model {
         return boundingBox;
     }
 
+    public Vector3 centroid() {
+        float cx = 0, cy = 0, cz = 0;
+
+        int n = 1;
+        for (Vector3 v : vertices) {
+            cx = cx * (n - 1) / n + v.x / n;
+            cy = cy * (n - 1) / n + v.y / n;
+            cz = cz * (n - 1) / n + v.z / n;
+            n++;
+        }
+
+        return new Vector3(cx, cy, cz);
+    }
+
     public Vector3 centroid(Face face) {
         float cx = 0, cy = 0, cz = 0;
 
+        int n = 1;
         for (int i : face.vertexIndex) {
-            Vector3 vertice = vertices.get(i);
-            cx += vertice.x;
-            cy += vertice.y;
-            cz += vertice.z;
+            Vector3 vertex = vertices.get(i);
+            cx = cx * (n - 1) / n + vertex.x / n;
+            cy = cy * (n - 1) / n + vertex.y / n;
+            cz = cz * (n - 1) / n + vertex.z / n;
+            n++;
         }
 
-        int n = face.vertexIndex.length;
+        return new Vector3(cx, cy, cz);
+    }
 
-        return new Vector3(cx / n, cy / n, cz / n);
+    public void rotate(Vector3 axis, float angle, Vector3 origin) {
+        for (Vector3 v : vertices) {
+            v.sub(origin);
+            v.rotate(axis, angle);
+            v.add(origin);
+        }
+    }
+
+    public void rotate(Vector3 axis, float angle) {
+        for (Vector3 v : vertices) {
+            v.rotate(axis, angle);
+        }
+    }
+
+    public void scale(float factor) {
+        for (Vector3 v : vertices) {
+            v.scl(factor);
+        }
+    }
+
+    public void scale(float x, float y, float z) {
+        for (Vector3 v : vertices) {
+            v.scl(x, y, z);
+        }
+    }
+
+    public void translate(Vector3 displacement) {
+        for (Vector3 v : vertices) {
+            v.add(displacement);
+        }
+    }
+
+    public void translate(float x, float y, float z) {
+        for (Vector3 v : vertices) {
+            v.add(x, y, z);
+        }
     }
 
     public String getPath() {
