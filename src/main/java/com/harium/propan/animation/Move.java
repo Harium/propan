@@ -20,7 +20,7 @@ public class Move extends ShapeAnimation {
 	}
 	
 	@Override
-	public void calculate(double x) {
+	public void calculate(float x) {
 		double valueX = interpolator.interpolate(start.x, end.x, x);
 		double valueY = interpolator.interpolate(start.y, end.y, x);
 		double valueZ = interpolator.interpolate(start.z, end.z, x);

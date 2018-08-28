@@ -55,7 +55,7 @@ public class ShapeAnimation extends AnimationScript {
 	}
 
 	@Override
-	public void calculate(double factor) {
+	public void calculate(float factor) {
 		// TODO Auto-generated method stub
 	}
 
