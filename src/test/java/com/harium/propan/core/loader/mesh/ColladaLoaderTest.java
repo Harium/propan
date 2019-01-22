@@ -51,6 +51,7 @@ public class ColladaLoaderTest {
         Assert.assertEquals("Blender 2.79.0 commit date:1970-01-01, commit time:00:00, hash:unknown", scene.getContributor().getAuthoringTool());
         Assert.assertEquals("2019-01-21T23:45:03", scene.getCreated());
         Assert.assertEquals("2019-01-21T23:45:03", scene.getModified());
+        Assert.assertEquals(1, scene.geometries.size());
 
         // Assert Model
         Assert.assertNotNull(model);

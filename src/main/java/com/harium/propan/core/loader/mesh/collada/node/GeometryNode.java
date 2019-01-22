@@ -7,6 +7,12 @@ import java.util.Set;
 
 public class GeometryNode {
 
+	private String name;
+
+	public GeometryNode(String name) {
+		this.name = name;
+	}
+
 	public Set<VerticesNode> vertices = new HashSet<VerticesNode>();
 	public Map<String, float[]> floatArrays = new HashMap<String, float[]>();
     public Map<String, SourceNode> sources = new HashMap<String, SourceNode>();
