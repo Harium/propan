@@ -6,10 +6,9 @@ import com.harium.etyl.geometry.Point3D;
 public class PointToVectorAdapter {
 
 	public static Vector3 adapt(Point3D point) {
-		
-		float px = (float) point.getX();
-		float py = (float) point.getY();
-		float pz = (float) point.getZ();
+		float px = (float) point.x;
+		float py = (float) point.y;
+		float pz = (float) point.z;
 		
 		Vector3 vector = new Vector3(px, py, pz);
 		return vector;
