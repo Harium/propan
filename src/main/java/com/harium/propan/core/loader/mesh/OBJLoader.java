@@ -111,7 +111,7 @@ public class OBJLoader implements VBOLoader {
         }
     }
 
-    private void parseFace(Model vbo, Group group, String line) {
+    void parseFace(Model vbo, Group group, String line) {
         String[] splitLine = line.substring(2).split(" ");
 
         int sides = splitLine.length;
@@ -122,20 +122,19 @@ public class OBJLoader implements VBOLoader {
 
         for (int i = 0; i < sides; i++) {
 
-            String[] face = splitLine[i].split(SEPARATOR);
+            String[] slices = splitLine[i].split(SEPARATOR);
 
-            if (face.length > 1) {
+            if (slices.length > 1) {
+                // vIndexes starts in 0
+                // OBJ Faces starts in 1
+                vIndexes[i] = Integer.parseInt(slices[0]) - 1;
 
-                //vIndexes starts in 0
-                //Faces starts in 1
-                vIndexes[i] = Integer.parseInt(face[0]) - 1;
-
-                if (!face[1].isEmpty()) {
-                    texIndexes[i] = Integer.parseInt(face[1]) - 1;
+                if (!slices[1].isEmpty()) {
+                    texIndexes[i] = Integer.parseInt(slices[1]) - 1;
                 }
 
-                if (face.length > 2) {
-                    nIndexes[i] = Integer.parseInt(face[2]) - 1;
+                if (slices.length > 2) {
+                    nIndexes[i] = Integer.parseInt(slices[2]) - 1;
                 }
 
             } else {
@@ -155,7 +154,7 @@ public class OBJLoader implements VBOLoader {
         return line.replaceAll("  ", " ");
     }
 
-    private static void parseVertex(String line, Model vbo) {
+    static void parseVertex(String line, Model vbo) {
 
         String[] parts = line.split(" ");
 
@@ -166,7 +165,7 @@ public class OBJLoader implements VBOLoader {
         vbo.addVertex(new Vector3(x, y, z));
     }
 
-    private static void parseVertexNormal(String line, Model vbo) {
+    static void parseVertexNormal(String line, Model vbo) {
 
         String[] parts = line.split(" ");
 
@@ -177,7 +176,7 @@ public class OBJLoader implements VBOLoader {
         vbo.getNormals().add(new Vector3(x, y, z));
     }
 
-    private static void parseVertexTexture(String line, Model vbo) {
+    static void parseVertexTexture(String line, Model vbo) {
 
         String[] parts = line.split(" ");
 
@@ -195,7 +194,7 @@ public class OBJLoader implements VBOLoader {
         try {
             materials.addAll(OBJMaterialLoader.loadMaterial(folder, filename));
         } catch (IOException e) {
-            System.err.println("Material " + filename + " not found in: "+folder);
+            System.err.println("Material " + filename + " not found in: " + folder);
         }
 
         return materials;

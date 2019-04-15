@@ -3,6 +3,7 @@ package com.harium.propan.core.loader.mesh;
 import com.harium.etyl.util.PathHelper;
 import com.harium.propan.TestUtils;
 import com.harium.propan.core.loader.MeshLoader;
+import com.harium.propan.core.model.Group;
 import com.harium.propan.core.model.Model;
 import org.junit.Assert;
 import org.junit.Before;
@@ -58,6 +59,15 @@ public class OBJLoaderTest {
             Assert.fail();
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void testParseFaceLine() {
+        Model vbo = new Model();
+        Group group = new Group("group");
+
+        loader.parseFace(vbo, group, "f 1//1 3//1 4//1");
+        Assert.assertArrayEquals(new int[]{0, 2, 3}, vbo.getFaces().get(0).vertexIndex);
     }
 
     @Test
