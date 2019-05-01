@@ -166,7 +166,15 @@ public class Model {
 
     public void triangulate() {
         ListIterator<Face> iterator = faces.listIterator();
+        iterate(iterator);
 
+        for (Group group : groups) {
+            iterator = group.getFaces().listIterator();
+            iterate(iterator);
+        }
+    }
+
+    private void iterate(ListIterator<Face> iterator) {
         while (iterator.hasNext()) {
             Face face = iterator.next();
             if (face.getSides() == 3) {

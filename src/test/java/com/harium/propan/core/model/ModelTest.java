@@ -96,6 +96,35 @@ public class ModelTest {
         Assert.assertArrayEquals(new int[]{1, 2, 3}, model.getFaces().get(  1).textureIndex);
     }
 
+    @Test
+    public void testTriangulateGroup() {
+        int[] squareOrder = new int[]{0, 1, 2, 3};
+        Face square = new Face(4);
+        square.vertexIndex = squareOrder;
+        square.normalIndex = squareOrder;
+        square.textureIndex = squareOrder;
+
+        Group group = new Group("square");
+        group.getFaces().add(square);
+
+        model.getGroups().add(group);
+        Assert.assertEquals(1, group.getFaces().size());
+
+        model.triangulate();
+        Assert.assertEquals(2, group.getFaces().size());
+        Assert.assertEquals(3, group.getFaces().get(0).getSides());
+        Assert.assertEquals(3, group.getFaces().get(1).getSides());
+
+        Assert.assertArrayEquals(new int[]{0, 1, 3}, group.getFaces().get(0).vertexIndex);
+        Assert.assertArrayEquals(new int[]{0, 1, 3}, group.getFaces().get(0).normalIndex);
+        Assert.assertArrayEquals(new int[]{0, 1, 3}, group.getFaces().get(0).textureIndex);
+
+        Assert.assertArrayEquals(new int[]{1, 2, 3}, group.getFaces().get(1).vertexIndex);
+        Assert.assertArrayEquals(new int[]{1, 2, 3}, group.getFaces().get(1).normalIndex);
+        Assert.assertArrayEquals(new int[]{1, 2, 3}, group.getFaces().get(  1).textureIndex);
+    }
+
+
     /*@Test
     public void testTriangulatePolygon() {
         model.getVertices().add(new Vector3(0,0,0));
