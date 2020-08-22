@@ -35,6 +35,7 @@ public class Intersector extends com.badlogic.gdx.math.Intersector {
         return intersectRayBounds(ray, obb, obb.transform);
     }
 
+    // Code from: https://stackoverflow.com/a/9837645/7030976
     public static boolean intersectRayCylinderFast(Ray ray, BaseCylinder cylinder) {
 
         Vector3 position = cylinder.transform.getTranslation(new Vector3());
