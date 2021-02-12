@@ -1,0 +1,6 @@
+# Created by Propan
+newmtl material1
+Kd 0.3 0.3 0.3
+
+newmtl material2
+Kd 0.5 0.0 0.0

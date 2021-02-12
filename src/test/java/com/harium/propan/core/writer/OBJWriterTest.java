@@ -3,6 +3,7 @@ package com.harium.propan.core.writer;
 import com.badlogic.gdx.math.Vector3;
 import com.harium.etyl.util.PathHelper;
 import com.harium.propan.core.loader.mesh.OBJLoader;
+import com.harium.propan.core.material.OBJMaterial;
 import com.harium.propan.core.model.Face;
 import com.harium.propan.core.model.Model;
 import com.harium.propan.core.writer.obj.OBJWriter;
@@ -51,6 +52,16 @@ public class OBJWriterTest {
         vbo.getFaces().add(new Face(3).addVertexes(1, 6, 2).addNormals(4, 4, 4));
         vbo.getFaces().add(new Face(3).addVertexes(2, 6, 8).addNormals(1, 1, 1));
         vbo.getFaces().add(new Face(3).addVertexes(2, 8, 4).addNormals(1, 1, 1));
+
+        OBJMaterial material = new OBJMaterial();
+        material.setName("material1");
+        material.setKd(new Vector3(0.3f, 0.3f, 0.3f));
+        vbo.addMaterial(material);
+
+        OBJMaterial material2 = new OBJMaterial();
+        material2.setName("material2");
+        material2.setKd(new Vector3(0.5f, 0, 0));
+        vbo.addMaterial(material2);
     }
 
     @Test
@@ -58,7 +69,6 @@ public class OBJWriterTest {
         String path = PathHelper.currentFileDirectory() + "/src/test/resources/";
 
         VBOWriter writer = new OBJWriter();
-
         writer.writeVBO(vbo, path + FILENAME);
 
         URL url = new URL(path + FILENAME);

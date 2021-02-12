@@ -6,6 +6,7 @@ import com.harium.etyl.util.PathHelper;
 import com.harium.etyl.util.StringUtils;
 import com.harium.etyl.util.io.IOHelper;
 import com.harium.propan.core.loader.mesh.OBJLoader;
+import com.harium.propan.core.material.OBJMaterial;
 import com.harium.propan.core.model.Face;
 import com.harium.propan.core.model.Group;
 import com.harium.propan.core.model.Model;
@@ -13,13 +14,17 @@ import com.harium.propan.core.writer.VBOWriter;
 
 import java.io.*;
 import java.util.List;
-
+import java.util.Map;
 
 public class OBJWriter implements VBOWriter {
 
     private static final boolean optimize = false;
     private static final String FACE_SEPARATOR = "/";
-    private static final String MTL_EXTENSION = ".mtl";
+
+    private static final String EXTENSION_OBJ = ".obj";
+    private static final String EXTENSION_MTL = ".mtl";
+
+    private OBJMaterialWriter materialWriter = new OBJMaterialWriter();
 
     @Override
     public void writeVBO(Model vbo, String path) throws IOException {
@@ -37,7 +42,11 @@ public class OBJWriter implements VBOWriter {
                 writeHeader(vbo, writer);
             }
 
-            writeMaterialLibrary(vbo, writer, filename);
+            if (!vbo.getMaterials().isEmpty()) {
+                exportMaterials(path, vbo.getMaterials());
+                writeMaterialLibrary(vbo, writer, filename);
+            }
+
             writeVertexes(vbo, writer);
 
             writeTextures(vbo, writer);
@@ -54,15 +63,20 @@ public class OBJWriter implements VBOWriter {
                 writeFaces(writer, group.getFaces());
             }
 
-            if (!vbo.getMaterials().isEmpty()) {
-                //exportMaterials();
-            }
-
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
             writer.close();
         }
+    }
+
+    private void exportMaterials(String path, Map<String, OBJMaterial> materials) throws IOException {
+        String dir = path;
+        if (dir.endsWith(EXTENSION_OBJ)) {
+            dir = dir.substring(0, dir.length() - EXTENSION_OBJ.length());
+            dir += EXTENSION_MTL;
+        }
+        materialWriter.writeMaterials(materials, dir);
     }
 
     private void writeHeader(Model vbo, Writer writer) throws IOException {
@@ -83,7 +97,7 @@ public class OBJWriter implements VBOWriter {
     }
 
     private void writeMaterialLibrary(Model vbo, Writer writer, String filename) throws IOException {
-        writer.write(OBJLoader.MATERIAL_LIB + " " + filename + MTL_EXTENSION + StringUtils.NEW_LINE);
+        writer.write(OBJLoader.MATERIAL_LIB + " " + filename + EXTENSION_MTL + StringUtils.NEW_LINE);
     }
 
     private void writeGroupSetup(Writer writer, Group group) throws IOException {
