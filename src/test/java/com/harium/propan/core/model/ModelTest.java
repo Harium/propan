@@ -107,7 +107,7 @@ public class ModelTest {
         Group group = new Group("square");
         group.getFaces().add(square);
 
-        model.getGroups().add(group);
+        model.addGroup(group);
         Assert.assertEquals(1, group.getFaces().size());
 
         model.triangulate();

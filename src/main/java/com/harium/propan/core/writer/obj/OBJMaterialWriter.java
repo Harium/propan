@@ -1,10 +1,11 @@
-package com.harium.propan.core.writer;
+package com.harium.propan.core.writer.obj;
 
 import com.badlogic.gdx.math.Vector3;
 import com.harium.etyl.util.StringUtils;
 import com.harium.etyl.util.io.IOHelper;
 import com.harium.propan.core.loader.mesh.OBJMaterialLoader;
 import com.harium.propan.core.material.OBJMaterial;
+import com.harium.propan.core.writer.MaterialWriter;
 
 import java.io.*;
 

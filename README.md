@@ -1,9 +1,11 @@
 # Propan
 
-A 3D fork of Etyl.
+A 3D framework built over [Etyl](https://github.com/Harium/etyl).
 
 ## Supported Formats
-Propan can load .OBJ files with materials and .3DS geometries
+- .obj (geometries and materials)
+- .3ds (geometries)
+- .bvh
 
 ## Maven
 ```

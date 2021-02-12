@@ -1,4 +1,4 @@
-package com.harium.propan.core.writer;
+package com.harium.propan.core.writer.obj;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -9,6 +9,7 @@ import com.harium.propan.core.loader.mesh.OBJLoader;
 import com.harium.propan.core.model.Face;
 import com.harium.propan.core.model.Group;
 import com.harium.propan.core.model.Model;
+import com.harium.propan.core.writer.VBOWriter;
 
 import java.io.*;
 import java.util.List;
@@ -48,7 +49,7 @@ public class OBJWriter implements VBOWriter {
 
             writeFaces(writer, vbo.getFaces());
 
-            for (Group group : vbo.getGroups()) {
+            for (Group group : vbo.getGroups().values()) {
                 writeGroupSetup(writer, group);
                 writeFaces(writer, group.getFaces());
             }
@@ -75,7 +76,7 @@ public class OBJWriter implements VBOWriter {
 
     private int facesCount(Model vbo) {
         int sum = vbo.getFaces().size();
-        for (Group group : vbo.getGroups()) {
+        for (Group group : vbo.getGroups().values()) {
             sum += group.getFaces().size();
         }
         return sum;

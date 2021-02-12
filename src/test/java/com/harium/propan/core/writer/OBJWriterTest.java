@@ -5,6 +5,7 @@ import com.harium.etyl.util.PathHelper;
 import com.harium.propan.core.loader.mesh.OBJLoader;
 import com.harium.propan.core.model.Face;
 import com.harium.propan.core.model.Model;
+import com.harium.propan.core.writer.obj.OBJWriter;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,26 +54,20 @@ public class OBJWriterTest {
     }
 
     @Test
-    public void testVBOWriter() {
-        String path = PathHelper.currentFileDirectory();
+    public void testVBOWriter() throws IOException {
+        String path = PathHelper.currentFileDirectory() + "/src/test/resources/";
 
         VBOWriter writer = new OBJWriter();
-        try {
-            writer.writeVBO(vbo, path + FILENAME);
 
-            URL url = new URL(path + FILENAME);
+        writer.writeVBO(vbo, path + FILENAME);
 
-            Model loaded = new OBJLoader().loadModel(url, FILENAME);
+        URL url = new URL(path + FILENAME);
 
-            Assert.assertEquals(8, loaded.getVertices().size());
-            Assert.assertEquals(6, loaded.getNormals().size());
-            Assert.assertEquals(12, loaded.getFaces().size());
+        Model loaded = new OBJLoader().loadModel(url, FILENAME);
 
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            Assert.fail();
-            e.printStackTrace();
-        }
+        Assert.assertEquals(8, loaded.getVertices().size());
+        Assert.assertEquals(6, loaded.getNormals().size());
+        Assert.assertEquals(12, loaded.getFaces().size());
     }
 
 }
