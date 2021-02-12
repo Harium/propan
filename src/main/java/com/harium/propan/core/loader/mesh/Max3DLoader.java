@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -60,9 +62,16 @@ public class Max3DLoader extends StreamParser implements VBOLoader {
 	}
 
 	@Override
-	public Model loadModel(URL url, String path) throws FileNotFoundException, IOException {
+	public Model loadModel(URL url, String path) throws IOException {
+		String fpath = url.getPath();
+		InputStream stream = url.openStream();
 
-		BufferedInputStream stream = new BufferedInputStream(url.openStream());
+		return loadModel(fpath, path, stream);
+	}
+
+	@Override
+	public Model loadModel(String fpath, String path, InputStream inputStream) throws IOException {
+		BufferedInputStream stream = new BufferedInputStream(inputStream);
 
 		String currentObjName = DEFAULT_GROUP_NAME;
 		
@@ -77,7 +86,7 @@ public class Max3DLoader extends StreamParser implements VBOLoader {
 			return null;
 		}
 
-		List<Group> groups = new ArrayList<Group>();
+		Map<String, Group> groups = new HashMap<>();
 		Group group = new Group(DEFAULT_GROUP_NAME);
 		OBJMaterial currentMaterial = null;
 
@@ -105,10 +114,10 @@ public class Max3DLoader extends StreamParser implements VBOLoader {
 
 				if(!DEFAULT_GROUP_NAME.equals(group.getName())) {
 					//Add last group
-					groups.add(group);
+					groups.put(group.getName(), group);
 				} else if(!group.getFaces().isEmpty()) {
 					//If group has at least one face 
-					groups.add(group);
+					groups.put(group.getName(), group);
 				}
 				group = new Group(groupName);
 				break;
@@ -176,7 +185,7 @@ public class Max3DLoader extends StreamParser implements VBOLoader {
 
 		//Add group to Model
 		if (group != null) {
-			groups.add(group);
+			groups.put(group.getName(), group);
 		}
 
 		vbo.setGroups(groups);

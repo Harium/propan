@@ -1,7 +1,6 @@
 package com.harium.propan.core.loader.motion;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -94,7 +93,7 @@ public class BVHLoader implements MotionLoader {
 		}
 	}
 
-	public Motion loadMotion(URL url, String path) throws FileNotFoundException, IOException {
+	public Motion loadMotion(URL url, String path) throws IOException {
 
 		Motion motion = new Motion();
 

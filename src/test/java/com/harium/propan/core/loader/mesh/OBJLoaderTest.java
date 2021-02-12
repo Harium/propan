@@ -29,36 +29,21 @@ public class OBJLoaderTest {
     }
 
     @Test
-    public void testLoadModel() {
+    public void testLoadModel() throws IOException {
         //Load a cube made with triangles
         String filename = "cube.obj";
 
-        URL dir = null;
-        try {
-            dir = MeshLoader.getInstance().getFullURL(filename);
-        } catch (MalformedURLException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
+        URL dir = MeshLoader.getInstance().getFullURL(filename);
 
-        try {
-
-            if (TestUtils.isTestEnvironment(dir)) {
+            /*if (TestUtils.isTestEnvironment(dir)) {
                 dir = new URL(MeshLoader.getInstance().getUrl(), "propan/assets/models/" + filename);
-            }
+            }*/
 
             Model vbo = loader.loadModel(dir, filename);
             Assert.assertNotNull(vbo);
             Assert.assertEquals(12, vbo.getFaces().size());
             Assert.assertEquals(8, vbo.getVertices().size());
 
-        } catch (FileNotFoundException e) {
-            Assert.fail();
-            e.printStackTrace();
-        } catch (IOException e) {
-            Assert.fail();
-            e.printStackTrace();
-        }
     }
 
     @Test
@@ -97,8 +82,8 @@ public class OBJLoaderTest {
             Assert.assertEquals(3, vbo.getMaterials().size());
 
             // Test Materials
-            Assert.assertEquals("left", vbo.getGroups().get(0).getMaterial().getName());
-            Assert.assertEquals("right", vbo.getGroups().get(1).getMaterial().getName());
+            Assert.assertEquals("left", vbo.getGroups().get("left").getMaterial().getName());
+            Assert.assertEquals("right", vbo.getGroups().get("right").getMaterial().getName());
 
         } catch (FileNotFoundException e) {
             Assert.fail();
