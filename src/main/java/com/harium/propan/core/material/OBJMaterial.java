@@ -19,13 +19,13 @@ public class OBJMaterial {
 	protected String mapKs = "";
 	
 	//Specular Highlight
-	protected float ns = 0f;
+	protected Float ns;
 	protected String mapNs = "";
 	
-	protected float d;
+	protected Float d;
 	protected String mapD = "";
 	
-	protected int illum = 0;
+	protected Integer illum;
 		
 	public OBJMaterial() {
 		super();
@@ -92,7 +92,7 @@ public class OBJMaterial {
 		this.mapKs = mapKs;
 	}
 
-	public float getNs() {
+	public Float getNs() {
 		return ns;
 	}
 
@@ -108,7 +108,7 @@ public class OBJMaterial {
 		this.mapNs = mapNs;
 	}
 
-	public float getD() {
+	public Float getD() {
 		return d;
 	}
 
@@ -124,7 +124,7 @@ public class OBJMaterial {
 		this.mapD = mapD;
 	}
 
-	public int getIllum() {
+	public Integer getIllum() {
 		return illum;
 	}
 

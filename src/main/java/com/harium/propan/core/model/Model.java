@@ -22,7 +22,7 @@ public class Model {
     List<Face> faces = new ArrayList<Face>();
     Map<String, Group> groups = new HashMap<String, Group>();
 
-    private Map<String, OBJMaterial> materials = new HashMap<String, OBJMaterial>();
+    private Map<String, OBJMaterial> materials = new LinkedHashMap<String, OBJMaterial>();
 
     private List<String> materialLibs = new ArrayList<String>();
 
@@ -79,6 +79,10 @@ public class Model {
 
     public void setGroups(Map<String, Group> groups) {
         this.groups = groups;
+    }
+
+    public void addMaterial(OBJMaterial material) {
+        materials.put(material.getName(), material);
     }
 
     public Map<String, OBJMaterial> getMaterials() {

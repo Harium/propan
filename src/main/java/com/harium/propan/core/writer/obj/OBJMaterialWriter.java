@@ -7,36 +7,66 @@ import com.harium.propan.core.loader.mesh.OBJMaterialLoader;
 import com.harium.propan.core.material.OBJMaterial;
 import com.harium.propan.core.writer.MaterialWriter;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.util.HashMap;
+import java.util.Map;
 
 public class OBJMaterialWriter implements MaterialWriter<OBJMaterial> {
 
     @Override
     public void writeMaterial(OBJMaterial material, String filename) throws IOException {
+        Map<String, OBJMaterial> map = new HashMap<>();
+        map.put(material.getName(), material);
+        writeMaterials(map, filename);
+    }
 
-        Writer writer = null;
+    @Override
+    public void writeMaterials(Map<String, OBJMaterial> materials, String filename) throws IOException {
+        File file = IOHelper.getFile(filename);
 
-        try {
-            File file = IOHelper.getFile(filename);
+        Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), IOHelper.ENCODING_UTF_8));
 
-            writer = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream(file), IOHelper.ENCODING_UTF_8));
+        writeHeader(writer);
 
-            writeHeader(material, writer);
-
+        for (OBJMaterial material : materials.values()) {
+            writer.write(StringUtils.NEW_LINE);
             writer.write(OBJMaterialLoader.NEW_MATERIAL + " " + material.getName() + StringUtils.NEW_LINE);
+
+            writeVector(writer, OBJMaterialLoader.AMBIENT_COLOR, material.getKa());
+            writeAttribute(writer, OBJMaterialLoader.AMBIENT_TEX_MAP, material.getMapKa());
             writeVector(writer, OBJMaterialLoader.DIFFUSE_COLOR, material.getKd());
             writeAttribute(writer, OBJMaterialLoader.DIFFUSE_TEX_MAP, material.getMapKd());
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            writer.close();
+            writeFloat(writer, OBJMaterialLoader.DISSOLVE, material.getD());
+            writeAttribute(writer, OBJMaterialLoader.DISSOLVE_TEX_MAP, material.getMapD());
+            writeVector(writer, OBJMaterialLoader.SPECULAR_COLOR, material.getKs());
+            writeAttribute(writer, OBJMaterialLoader.SPECULAR_TEX_MAP, material.getMapKs());
+            writeInteger(writer, OBJMaterialLoader.ILLUMINATION, material.getIllum());
         }
+
+        writer.close();
+    }
+
+    private void writeInteger(Writer writer, String attribute, Integer value) throws IOException {
+        if (value == null) {
+            return;
+        }
+        writer.write(attribute + " " + value + StringUtils.NEW_LINE);
+    }
+
+    private void writeFloat(Writer writer, String attribute, Float value) throws IOException {
+        if (value == null) {
+            return;
+        }
+        writer.write(attribute + " " + value + StringUtils.NEW_LINE);
     }
 
     private void writeAttribute(Writer writer, String objAttribute, String attribute) throws IOException {
-        if (attribute.isEmpty()) {
+        if (attribute == null || attribute.isEmpty()) {
             return;
         }
         writer.write(objAttribute + " " + attribute + StringUtils.NEW_LINE);
@@ -46,11 +76,11 @@ public class OBJMaterialWriter implements MaterialWriter<OBJMaterial> {
         if (v == null) {
             return;
         }
-        writer.write(attribute + " " + v.x + " " + " " + v.y + " " + v.z + StringUtils.NEW_LINE);
+        writer.write(attribute + " " + v.x + " " + v.y + " " + v.z + StringUtils.NEW_LINE);
     }
 
-    private void writeHeader(OBJMaterial material, Writer writer) throws IOException {
-        writer.write("# Created by Propan " + StringUtils.NEW_LINE);
+    private void writeHeader(Writer writer) throws IOException {
+        writer.write("# Created by Propan");
     }
 
 }
