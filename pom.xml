@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.harium.propan</groupId>
     <artifactId>propan</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.2</version>
     <name>Propan</name>
     <description>3D framework built over etyl</description>
     <url>http://github.com/harium/propan</url>
