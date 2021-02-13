@@ -18,6 +18,8 @@ import java.util.Map;
 
 public class OBJMaterialWriter implements MaterialWriter<OBJMaterial> {
 
+    private boolean compactMode = false;
+
     @Override
     public void writeMaterial(OBJMaterial material, String filename) throws IOException {
         Map<String, OBJMaterial> map = new HashMap<>();
@@ -31,12 +33,18 @@ public class OBJMaterialWriter implements MaterialWriter<OBJMaterial> {
 
         Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), IOHelper.ENCODING_UTF_8));
 
-        writeHeader(writer);
+        if (!compactMode) {
+            writeHeader(writer);
+        }
 
         for (OBJMaterial material : materials.values()) {
-            writer.write(StringUtils.NEW_LINE);
-            writer.write(OBJMaterialLoader.NEW_MATERIAL + " " + material.getName() + StringUtils.NEW_LINE);
-
+            if (!compactMode) {
+                writer.write(StringUtils.NEW_LINE);
+            }
+            writer.write(OBJMaterialLoader.NEW_MATERIAL + " " + material.getName());
+            if (!compactMode) {
+                writer.write(StringUtils.NEW_LINE);
+            }
             writeVector(writer, OBJMaterialLoader.AMBIENT_COLOR, material.getKa());
             writeAttribute(writer, OBJMaterialLoader.AMBIENT_TEX_MAP, material.getMapKa());
             writeVector(writer, OBJMaterialLoader.DIFFUSE_COLOR, material.getKd());

@@ -13,17 +13,18 @@ import com.harium.propan.core.model.Model;
 import com.harium.propan.core.writer.VBOWriter;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
 public class OBJWriter implements VBOWriter {
 
-    private static final boolean optimize = false;
     private static final String FACE_SEPARATOR = "/";
 
     private static final String EXTENSION_OBJ = ".obj";
     private static final String EXTENSION_MTL = ".mtl";
 
+    private boolean compactMode = false;
     private OBJMaterialWriter materialWriter = new OBJMaterialWriter();
 
     @Override
@@ -36,11 +37,9 @@ public class OBJWriter implements VBOWriter {
             File file = IOHelper.getFile(path);
 
             writer = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream(file), IOHelper.ENCODING_UTF_8));
+                    new FileOutputStream(file), StandardCharsets.UTF_8));
 
-            if (!optimize) {
-                writeHeader(vbo, writer);
-            }
+            writeHeader(vbo, writer);
 
             if (!vbo.getMaterials().isEmpty()) {
                 exportMaterials(path, vbo.getMaterials());
@@ -48,15 +47,8 @@ public class OBJWriter implements VBOWriter {
             }
 
             writeVertexes(vbo, writer);
-
             writeTextures(vbo, writer);
-
-            if (!optimize) {
-                writer.write(StringUtils.NEW_LINE);
-            }
             writeNormals(vbo, writer);
-
-            writeFaces(writer, vbo.getFaces());
 
             for (Group group : vbo.getGroups().values()) {
                 writeGroupSetup(writer, group);
@@ -80,6 +72,9 @@ public class OBJWriter implements VBOWriter {
     }
 
     private void writeHeader(Model vbo, Writer writer) throws IOException {
+        if (compactMode) {
+            return;
+        }
         writer.write("# Created by Propan " + StringUtils.NEW_LINE);
         writer.write("# Vertices: " + verticesCount(vbo) + ",  Faces: " + facesCount(vbo) + StringUtils.NEW_LINE);
     }
@@ -179,6 +174,9 @@ public class OBJWriter implements VBOWriter {
     }
 
     private void writeTextures(Model vbo, Writer writer) throws IOException {
+        if (!compactMode) {
+            writer.write(StringUtils.NEW_LINE);
+        }
         for (Vector2 vector : vbo.getTextures()) {
             String text = OBJLoader.VERTEX_TEXCOORD + " " + vector.x + " " + vector.y + StringUtils.NEW_LINE;
             writer.write(text);
@@ -186,19 +184,19 @@ public class OBJWriter implements VBOWriter {
     }
 
     private void writeNormals(Model vbo, Writer writer) throws IOException {
+        if (!compactMode) {
+            writer.write(StringUtils.NEW_LINE);
+        }
         for (Vector3 vector : vbo.getNormals()) {
             String text = OBJLoader.VERTEX_NORMAL + " " + vector.x + " " + vector.y + " " + vector.z + StringUtils.NEW_LINE;
             writer.write(text);
         }
-
-        if (!optimize) {
-            if (!vbo.getNormals().isEmpty()) {
-                writer.write(StringUtils.NEW_LINE);
-            }
-        }
     }
 
     private void writeVertexes(Model vbo, Writer writer) throws IOException {
+        if (!compactMode) {
+            writer.write(StringUtils.NEW_LINE);
+        }
         for (Vector3 vector : vbo.getVertices()) {
             String text = OBJLoader.VERTEX + " " + vector.x + " " + vector.y + " " + vector.z + StringUtils.NEW_LINE;
             writer.write(text);
