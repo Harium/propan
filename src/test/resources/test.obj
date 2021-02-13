@@ -1,6 +1,7 @@
-# Created by Propan 
+# Created by Propan
 # Vertices: 8,  Faces: 12
 mtllib test.mtl
+
 v 0.0 0.0 0.0
 v 0.0 0.0 1.0
 v 0.0 1.0 0.0

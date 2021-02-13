@@ -49,16 +49,23 @@ public class OBJWriter implements VBOWriter {
             writeVertexes(vbo, writer);
             writeTextures(vbo, writer);
             writeNormals(vbo, writer);
-
-            for (Group group : vbo.getGroups().values()) {
-                writeGroupSetup(writer, group);
-                writeFaces(writer, group.getFaces());
-            }
+            writeGroups(vbo, writer);
 
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
             writer.close();
+        }
+    }
+
+    private void writeGroups(Model vbo, Writer writer) throws IOException {
+        if (vbo.getGroups().isEmpty()) {
+            writeFaces(writer, vbo.getFaces());
+        } else {
+            for (Group group : vbo.getGroups().values()) {
+                writeGroupSetup(writer, group);
+                writeFaces(writer, group.getFaces());
+            }
         }
     }
 
@@ -75,7 +82,7 @@ public class OBJWriter implements VBOWriter {
         if (compactMode) {
             return;
         }
-        writer.write("# Created by Propan " + StringUtils.NEW_LINE);
+        writer.write("# Created by Propan" + StringUtils.NEW_LINE);
         writer.write("# Vertices: " + verticesCount(vbo) + ",  Faces: " + facesCount(vbo) + StringUtils.NEW_LINE);
     }
 
@@ -109,6 +116,9 @@ public class OBJWriter implements VBOWriter {
     }
 
     private void writeFaces(Writer writer, List<Face> faces) throws IOException {
+        if (!compactMode) {
+            writer.write(StringUtils.NEW_LINE);
+        }
         for (Face face : faces) {
 
             boolean hasTexture = faceHasTexture(face);
@@ -174,7 +184,7 @@ public class OBJWriter implements VBOWriter {
     }
 
     private void writeTextures(Model vbo, Writer writer) throws IOException {
-        if (!compactMode) {
+        if (!vbo.getTextures().isEmpty() && !compactMode) {
             writer.write(StringUtils.NEW_LINE);
         }
         for (Vector2 vector : vbo.getTextures()) {
@@ -184,7 +194,7 @@ public class OBJWriter implements VBOWriter {
     }
 
     private void writeNormals(Model vbo, Writer writer) throws IOException {
-        if (!compactMode) {
+        if (!vbo.getNormals().isEmpty() && !compactMode) {
             writer.write(StringUtils.NEW_LINE);
         }
         for (Vector3 vector : vbo.getNormals()) {
