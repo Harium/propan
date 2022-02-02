@@ -13,7 +13,6 @@ public class Motion {
     float frameTime;
 
     Armature armature;
-
     Map<Integer, KeyFrame> keyFrames = new HashMap<Integer, KeyFrame>();
 
     public Motion() {

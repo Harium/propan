@@ -21,6 +21,7 @@ import com.badlogic.gdx.math.Vector3;
 
 public class BVHLoader implements MotionLoader {
 
+	private static final String TAG_COMMENT = "#";
 	private static final String TAG_HIERARCHY = "HIERARCHY";
 	private static final String TAG_ROOT = "ROOT";
 	private static final String TAG_OFFSET = "OFFSET";
@@ -94,9 +95,7 @@ public class BVHLoader implements MotionLoader {
 	}
 
 	public Motion loadMotion(URL url, String path) throws IOException {
-
 		Motion motion = new Motion();
-
 		BVHStatus status = new BVHStatus();
 		
 		Map<Integer, KeyFrame> keyFrames = motion.getKeyFrames();
@@ -110,7 +109,9 @@ public class BVHLoader implements MotionLoader {
 		while ((line = reader.readLine()) != null) {
 
 			line = fixLine(line);
-
+			if (line.startsWith(TAG_COMMENT)) {
+				continue;
+			}
 			if (line.startsWith(TAG_HIERARCHY)) {
 				mode = TAG_HIERARCHY;
 			} else if (line.startsWith(TAG_MOTION)) {
@@ -138,7 +139,7 @@ public class BVHLoader implements MotionLoader {
 	private void parseKeyFrame(BVHStatus status, Map<Integer, KeyFrame> keyFrames, String line) {
 		int keyFrameIndex = keyFrames.size();
 		KeyFrame keyFrame = new KeyFrame();
-				
+
 		String[] parts = line.split(" ");
 		
 		int index = 0;
@@ -180,7 +181,6 @@ public class BVHLoader implements MotionLoader {
 			
 			transform.q = new Quaternion();
 			transform.q.setEulerAngles(joint.yRotation, joint.xRotation, joint.zRotation);
-			
 			transform.translation = new Vector3(joint.xPosition, joint.yPosition, joint.zPosition);
 						
 			int jointIndex = status.indexes.get(joint.name);
