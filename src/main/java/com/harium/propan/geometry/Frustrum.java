@@ -3,7 +3,7 @@ package com.harium.propan.geometry;
 import java.util.List;
 
 import com.badlogic.gdx.math.Vector3;
-import com.harium.etyl.commons.collision.CollisionStatus;
+import com.harium.etyl.geometry.collision.CollisionStatus;
 
 /**
  * Frustrum class based on: http://cgvr.cs.uni-bremen.de/teaching/cg_literatur/lighthouse3d_view_frustum_culling/
